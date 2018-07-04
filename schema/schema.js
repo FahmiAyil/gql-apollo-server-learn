@@ -72,7 +72,7 @@ const animedata = [
         }
     },
     {
-        id: 9,
+        id: 3,
         title: 'Boruto',
         mascot: 'White Eyes',
         synopsis: 'Boruto is son of naruto that want to get more power to beat an evil',
@@ -100,6 +100,14 @@ const typeDefs = `
         id: Int!,
         desc: String
     }
+    type Mutation {
+        addAnime(input: pushAnime): Anime
+    }
+    input pushAnime {
+        title: String,
+        mascot: String,
+        synopsis: String,
+    }
     
 `;
 
@@ -113,8 +121,20 @@ const resolvers = {
             return animedata.filter((data) => {
                 return data.id == args.id
             })[0]
-        }
+        },
     },
+    Mutation: {
+        addAnime: (root, args) => { 
+            const newAnime = {
+                id : animedata.length+1,
+                title : args.input.title,
+                mascot : args.input.mascot,
+                synopsis : args.input.synopsis,
+            }
+            animedata.push(newAnime)
+            return newAnime
+        }
+    }
 };
 
 // Put together a schema
